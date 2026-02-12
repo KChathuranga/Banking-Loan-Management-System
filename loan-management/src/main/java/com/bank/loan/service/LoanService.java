@@ -3,6 +3,7 @@ package com.bank.loan.service;
 import com.bank.loan.dto.LoanRequestDTO;
 import com.bank.loan.model.EmiSchedule;
 import com.bank.loan.model.Loan;
+import com.bank.loan.model.LoanStatusHistory;
 
 import java.util.List;
 
@@ -17,5 +18,9 @@ public interface LoanService {
     List<Loan> getAllLoans();
 
     List<EmiSchedule> getEmiSchedule(Long loanId);
+
+    void payEmi(Long emiId);
+
+    List<LoanStatusHistory> getLoanHistory(Long loanId);
 
 }

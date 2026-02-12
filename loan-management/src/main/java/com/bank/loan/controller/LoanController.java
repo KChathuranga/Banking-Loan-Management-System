@@ -1,4 +1,5 @@
 package com.bank.loan.controller;
+import com.bank.loan.model.LoanStatusHistory;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -71,6 +72,19 @@ public class LoanController {
     @GetMapping("/{id}/emis")
     public ResponseEntity<List<EmiSchedule>> getEmis(@PathVariable Long id) {
         return ResponseEntity.ok(loanService.getEmiSchedule(id));
+    }
+
+    @PutMapping("/emis/{emiId}/pay")
+    public ResponseEntity<String> payEmi(@PathVariable Long emiId) {
+        loanService.payEmi(emiId);
+        return ResponseEntity.ok("EMI paid successfully");
+    }
+
+    @GetMapping("/{id}/history")
+    public ResponseEntity<List<LoanStatusHistory>> getLoanHistory(@PathVariable Long id) {
+        return ResponseEntity.ok(
+                loanService.getLoanHistory(id)
+        );
     }
 
 }
