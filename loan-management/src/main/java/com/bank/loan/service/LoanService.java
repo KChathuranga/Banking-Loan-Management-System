@@ -23,4 +23,6 @@ public interface LoanService {
 
     List<LoanStatusHistory> getLoanHistory(Long loanId);
 
+    List<Loan> getLoansForOfficer();
+
 }

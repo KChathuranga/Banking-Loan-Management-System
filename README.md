@@ -17,7 +17,7 @@ using a modern enterprise architecture.
 
 ## Technology Stack
 ### Backend
-- Java 25
+- Java 21
 - Spring Boot (Spring MVC)
 - Spring Data JPA
 - MySQL

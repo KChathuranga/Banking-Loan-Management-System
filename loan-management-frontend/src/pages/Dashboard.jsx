@@ -1,18 +1,16 @@
-import LoanApply from "../components/LoanApply";
-import LoanList from "../components/LoanList";
-import EmiList from "../components/EmiList";
+import CustomerDashboard from "./CustomerDashboard";
+import OfficerDashboard from "./OfficerDashboard";
+import AdminDashboard from "./AdminDashboard";
 
 function Dashboard() {
-  return (
-    <div>
-      <h1>Loan Management Dashboard</h1>
-      <LoanApply />
-      <hr />
-      <LoanList />
-      <hr />
-      <EmiList />
-    </div>
-  );
+
+  const email = localStorage.getItem("email");
+
+  if (email.includes("customer")) return <CustomerDashboard />;
+  if (email.includes("officer")) return <OfficerDashboard />;
+  if (email.includes("admin")) return <AdminDashboard />;
+
+  return <div>No role detected</div>;
 }
 
 export default Dashboard;

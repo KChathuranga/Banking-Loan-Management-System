@@ -25,5 +25,5 @@ public class LoanStatusHistory {
 
     private LocalDateTime changedAt;
 
-    private String changedBy; // username or email
+    private String changedBy;
 }

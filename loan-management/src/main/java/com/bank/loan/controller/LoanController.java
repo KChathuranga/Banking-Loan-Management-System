@@ -1,23 +1,23 @@
 package com.bank.loan.controller;
-import com.bank.loan.model.LoanStatusHistory;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 
 import com.bank.loan.dto.LoanRequestDTO;
 import com.bank.loan.dto.LoanResponseDTO;
 import com.bank.loan.model.EmiSchedule;
 import com.bank.loan.model.Loan;
+import com.bank.loan.model.LoanStatusHistory;
 import com.bank.loan.service.LoanService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name = "Loan Management APIs", description = "APIs for managing bank loans")
 @RestController
 @RequestMapping("/api/loans")
 @CrossOrigin
-@Tag(name = "Loan Management APIs", description = "APIs for managing bank loans")
 public class LoanController {
 
     private final LoanService loanService;
@@ -86,5 +86,17 @@ public class LoanController {
                 loanService.getLoanHistory(id)
         );
     }
+
+    @GetMapping("/officer")
+    public ResponseEntity<List<LoanResponseDTO>> getLoansForOfficer() {
+
+        List<LoanResponseDTO> loans = loanService.getLoansForOfficer()
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+
+        return ResponseEntity.ok(loans);
+    }
+
 
 }

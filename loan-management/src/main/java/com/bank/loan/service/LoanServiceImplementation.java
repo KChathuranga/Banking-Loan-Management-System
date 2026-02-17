@@ -26,7 +26,6 @@ public class LoanServiceImplementation implements LoanService {
     private final EmiScheduleRepository emiRepository;
     private final LoanStatusHistoryRepository historyRepository;
 
-
     public LoanServiceImplementation(LoanRepository loanRepository,
                                      UserRepository userRepository,
                                      EmiService emiService,
@@ -43,6 +42,7 @@ public class LoanServiceImplementation implements LoanService {
     public Loan applyLoan(LoanRequestDTO dto) {
         User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + dto.getUserId()));
+
 
         Loan loan = new Loan();
         loan.setUser(user);
@@ -69,7 +69,9 @@ public class LoanServiceImplementation implements LoanService {
         logStatusChange(savedLoan, "ACTIVE", "LOAN_OFFICER");
         emiService.generateEmiSchedule(savedLoan);
         return savedLoan;
+
     }
+
 
     @Override
     public Loan rejectLoan(Long loanId) {
@@ -81,6 +83,7 @@ public class LoanServiceImplementation implements LoanService {
         Loan savedLoan = loanRepository.save(loan);
         logStatusChange(savedLoan, "REJECTED", "LOAN_OFFICER");
         return savedLoan;
+
     }
 
     @Override
@@ -117,6 +120,7 @@ public class LoanServiceImplementation implements LoanService {
             loanRepository.save(loan);
             logStatusChange(loan, "CLOSED", "SYSTEM");
         }
+
     }
 
     private void logStatusChange(Loan loan, String status, String changedBy) {
@@ -133,5 +137,11 @@ public class LoanServiceImplementation implements LoanService {
     @Override
     public List<LoanStatusHistory> getLoanHistory(Long loanId) {
         return historyRepository.findByLoanId(loanId);
+    }
+    @Override
+    public List<Loan> getLoansForOfficer() {
+        return loanRepository.findByStatusIn(
+                List.of("PENDING", "ACTIVE")
+        );
     }
 }

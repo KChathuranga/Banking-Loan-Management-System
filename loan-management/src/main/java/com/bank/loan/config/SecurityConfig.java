@@ -2,6 +2,7 @@ package com.bank.loan.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -17,22 +18,18 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
 
-                        // Public endpoints
-                        .requestMatchers("/api/auth/**", "/swagger-ui/**",
-                                "/v3/api-docs/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/loans").hasRole("CUSTOMER")
+                        .requestMatchers(HttpMethod.GET, "/api/loans/*/emis").hasRole("CUSTOMER")
+                        .requestMatchers(HttpMethod.PUT, "/api/loans/emis/*/pay").hasRole("CUSTOMER")
 
-                        // Customer endpoints
-                        .requestMatchers("/api/loans").hasRole("CUSTOMER")
-                        .requestMatchers("/api/loans/emis/**").hasRole("CUSTOMER")
+                        .requestMatchers(HttpMethod.PUT, "/api/loans/*/approve").hasRole("LOAN_OFFICER")
+                        .requestMatchers(HttpMethod.PUT, "/api/loans/*/reject").hasRole("LOAN_OFFICER")
+                        // LOAN OFFICER
+                        .requestMatchers(HttpMethod.GET, "/api/loans/officer").hasRole("LOAN_OFFICER")
 
-                        // Loan officer endpoints
-                        .requestMatchers("/api/loans/*/approve").hasRole("LOAN_OFFICER")
-                        .requestMatchers("/api/loans/*/reject").hasRole("LOAN_OFFICER")
-
-                        // Admin endpoints
-                        .requestMatchers("/api/loans").hasRole("ADMIN")
-
+                        .requestMatchers(HttpMethod.GET, "/api/loans").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults());

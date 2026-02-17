@@ -17,8 +17,8 @@ public class AuthServiceImplementation implements AuthService {
     private final PasswordEncoder passwordEncoder;
 
     public AuthServiceImplementation(UserRepository userRepository,
-                           RoleRepository roleRepository,
-                           PasswordEncoder passwordEncoder) {
+                                     RoleRepository roleRepository,
+                                     PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
